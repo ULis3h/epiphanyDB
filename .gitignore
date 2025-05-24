@@ -1,0 +1,26 @@
+/*
+# 需要提交的文件
+!/.gitignore
+!/.gitattributes
+!/CMakeLists.txt
+!/README.md
+!/src
+!/docs
+!/cmake
+!/debug
+!/examples
+!/client
+!/tests
+!/include
+!/Doxyfile
+
+#  忽略文件
+/build
+/latex
+*.aed
+*.ELog
+*.log
+*.relog
+*.bkp
+*.dtmp
+*.DS_Store

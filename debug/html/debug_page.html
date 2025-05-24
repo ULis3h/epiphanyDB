@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>存储引擎 - 数据页查看器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: monospace;
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+        }
+
+        .page-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-panel {
+            min-width: 250px;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .page-viewer {
+            flex: 1;
+            min-width: 600px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        button {
+            width: 100%;
+            padding: 8px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .page-header {
+            padding: 10px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .page-content {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .offset {
+            padding: 4px 8px;
+            color: #666;
+            background: #f5f5f5;
+            text-align: right;
+            border-right: 1px solid #ddd;
+            user-select: none;
+        }
+
+        .hex-content {
+            padding: 4px 8px;
+            white-space: pre;
+        }
+
+        .ascii-view {
+            padding: 4px 8px;
+            border-left: 1px solid #ddd;
+        }
+
+        .byte-group {
+            display: inline-block;
+            padding: 0 4px;
+        }
+
+        .byte-group:hover {
+            background: #f0f0f0;
+        }
+
+        .page-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-item {
+            padding: 8px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .info-value {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="control-panel">
+            <div class="control-group">
+                <label>页面类型</label>
+                <select id="pageType">
+                    <option value="data">数据页</option>
+                    <option value="index">索引页</option>
+                    <option value="undo">回滚页</option>
+                    <option value="ibuf">Change Buffer</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>页号</label>
+                <input type="number" id="pageNumber" min="0" value="0">
+            </div>
+
+            <div class="control-group">
+                <label>表空间ID</label>
+                <input type="number" id="spaceId" min="0" value="0">
+            </div>
+
+            <button onclick="loadPage()">加载页面</button>
+            <button onclick="prevPage()">上一页</button>
+            <button onclick="nextPage()">下一页</button>
+            <button onclick="exportPage()">导出页面</button>
+        </div>
+
+        <div class="page-viewer">
+            <div class="page-info">
+                <div class="info-item">
+                    <div class="info-label">文件偏移量</div>
+                    <div class="info-value">0x00000000</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">页面大小</div>
+                    <div class="info-value">16 KB</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">校验和</div>
+                    <div class="info-value">0xABCD1234</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">LSN</div>
+                    <div class="info-value">123456789</div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <div class="offset">
+                    0000<br>0010<br>0020<br>0030<br>0040<br>0050<br>0060<br>0070
+                </div>
+                <div class="hex-content">
+                    <div class="byte-group">00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F</div>
+                    <div class="byte-group">10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F</div>
+                    <div class="byte-group">20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F</div>
+                    <div class="byte-group">30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F</div>
+                    <div class="byte-group">40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F</div>
+                    <div class="byte-group">50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F</div>
+                    <div class="byte-group">60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F</div>
+                    <div class="byte-group">70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadPage() {
+            // 加载页面数据
+        }
+
+        function prevPage() {
+            // 加载上一页
+        }
+
+        function nextPage() {
+            // 加载下一页
+        }
+
+        function exportPage() {
+            // 导出页面数据
+        }
+    </script>
+</body>
+</html>
