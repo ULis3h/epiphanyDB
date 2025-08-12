@@ -1,10 +1,12 @@
 add_subdirectory(os)
+add_subdirectory(util)
 add_subdirectory(common)
 add_subdirectory(bufferpool)
 
 include_directories(include)
 include_directories(include/os)
 include_directories(include/common)
+include_directories(include/util)
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR} EPIPHANY_SRC_DIR)
 
 # comb.
@@ -17,4 +19,4 @@ target_include_directories(
     ${PROJECT_SOURCE_DIR}/include
 )
 
-target_link_libraries(epiphany PRIVATE common os)
+target_link_libraries(epiphany PRIVATE common os util)

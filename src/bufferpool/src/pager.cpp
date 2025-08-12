@@ -1,4 +1,5 @@
 #include "pager.hpp"
+#include "linked_list.hpp"
 #include "mem_manager.hpp"
 
 using epiphany::bufferpool::Pager;

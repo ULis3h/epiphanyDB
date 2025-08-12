@@ -1,4 +1,5 @@
 include_directories(${PROJECT_SOURCE_DIR}/src/include/common)
+include_directories(${PROJECT_SOURCE_DIR}/src/include/util)
 include_directories(${PROJECT_SOURCE_DIR}/src/include/bufferpool)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
 
