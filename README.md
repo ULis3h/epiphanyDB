@@ -9,49 +9,51 @@
   <a href="https://github.com/ULis3h/epiphanyDB/actions/workflows/codeql.yml"><img src="https://github.com/ULis3h/epiphanyDB/actions/workflows/codeql.yml/badge.svg?event=status" alt="CodeQL Advanced"/></a>
   <a href="#"><img src="https://img.shields.io/github/license/mashape/apistatus" alt="GitHub License"/></a>
 </p>
-`EpiphanyDB` 是一款通用数据库管理系统,支持在有操作系统和无操作系统环境下运行.它提供了统一的存储接口,并可以适配多种流行的数据库系统.
 
-## 特性
 
-### 核心特性
+`EpiphanyDB` is a general database management system that supports running in both operating system and non-operating system environments. It provides a unified storage interface and can adapt to a variety of mainstream database systems.
 
-### 存储特性
+## Features
 
-## 支持平台
+### Core Features
+
+### Storage Features
+
+## Supported Platforms
 - Windows
 - Unix-like
 - MacOS
 
 
-## 功能
+## Functionality
 
-## 模块设计
-除使用模板实现的模块外，所有的模块对外接口均在`include`目录中给出，在模块所属目录中实现，也就是`include`中仅进行声明，这样，如果希望更新某个模块，只需要实现`include`中的对应声明即可，无需修改其他模块. 模块的组织结构如下图所示:
+## Module Design
+Except for modules implemented with templates, the external interfaces of all modules are provided in the `include` directory and implemented in their respective module directories. This means that `include` only contains declarations. Therefore, to update a module, one only needs to implement the corresponding declarations in `include` without modifying other modules. The module organization is shown in the figure below:
 ![img](docs/assets/module_arch.png)
 
 
-* [X] [公共组件 common](docs/design/common/README.md)
-* [ ] [缓冲池模块 Buffer Pool](docs/design/pager/README.md)
+* [X] [Common Components (common)](docs/design/common/README.md)
+* [ ] [Buffer Pool Module](docs/design/pager/README.md)
 * [ ] [core](docs/design/core/README.md)
-* [ ] [索引模块 index](docs/design/index/README.md)
+* [ ] [Index Module (index)](docs/design/index/README.md)
 * [ ] [mco_n](docs/design/mco_n/README.md)
 * [ ] [os](docs/design/os/README.md)
 * [ ] [txn](docs/design/txn/README.md)
 
-## 编程接口
+## Programming API
 
 * [X] [epiphanydb capi](docs/user/user_capi.md)
 * [ ] [epiphanydb cppapi](docs/user/user_cppapi.md)
 
 
-## 构建
+## Build
 
-拉取源码：
+Clone the source code:
 ```
 $ git clone http://192.168.3.248:9091/root/enpiphany.git
 ```
 
-### Unix-likes
+### Unix-like
 ```bash
 $ mkdir build && cd build
 ```
@@ -60,28 +62,28 @@ $ cmake ..
 ```
 
 
-### Windows - mingw
-```
+### Windows - MinGW
+```bash
 $ mkdir build && cd build
 ```
 
-```cmd
+```bash
 $ cmake -G "MinGW Makefiles" ..
 ```
 
-```
+```bash
 $ make
 ```
 
-## 测试
+## Testing
 
-### 基础测试
+### Basic Tests
 
 ## TODO
 
 - os  
-  1. `TLFS` 算法.  
+  1. `TLFS` algorithm.  
 - common  
-  1.内存池实现 [完成] 
-  2.LRU缓存淘汰策略  [完成] [待测试]  
-  3.LRU-K缓存淘汰策略
+  1. Memory pool implementation [Done] 
+  2. LRU cache eviction policy [Done] [To be tested]  
+  3. LRU-K cache eviction policy
