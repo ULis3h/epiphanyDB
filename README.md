@@ -1,5 +1,7 @@
 # EpiphanyDB
 
+
+[![CodeQL Advanced](https://github.com/ULis3h/epiphanyDB/actions/workflows/codeql.yml/badge.svg?event=status)](https://github.com/ULis3h/epiphanyDB/actions/workflows/codeql.yml)
 `EpiphanyDB` 是一款为嵌入式系统设计的高性能\可靠的存储引擎,支持在有操作系统和无操作系统环境下运行.它提供了统一的存储接口,并可以适配多种流行的数据库系统.
 
 ## 特性
