@@ -9,16 +9,16 @@
 /***************************required includes**********************************/
 #include <stddef.h>
 #include <stdint.h>
-/*************************required includes end********************************/
+/**************************required includes end*******************************/
 
-/******************************epiphany version ************************************/
+/***************************epiphany version***********************************/
 #define EPIPHANY_VERSION_MAJOR 0
 #define EPIPHANY_VERSION_MINOR 0
 #define EPIPHANY_VERSION_PATCH 1
 #define EPIPHANY_VERSION_STRING "epiphany 0.0.0.1: (September 23, 2024)"
-/****************************epiphany version end***********************************/
+/***************************epiphany version end*******************************/
 
-/***************************epiphany strusts define*********************************/
+/***************************epiphany structs define****************************/
 struct __epiphany_config; typedef struct __epiphany_config EPIPHANY_CONFIG;
 struct __epiphany_connection; typedef struct __epiphany_connection EPIPHANY_CONNECTION;
 struct __epiphany_session; typedef struct __epiphany_session EPIPHANY_SESSION;
@@ -83,7 +83,7 @@ struct __epiphany_session {
 
 };
 
-/*************************epiphany strusts define end*******************************/
+/*************************epiphany strusts define end**************************/
 
 /// @brief 存储引擎配置创建函数.
 /// @param home [in] 数据库主目录.

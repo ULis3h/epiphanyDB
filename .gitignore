@@ -13,6 +13,8 @@
 !/tests
 !/include
 !/Doxyfile
+!/.clang-format
+!/.vscode/
 
 #  忽略文件
 /build

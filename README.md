@@ -1,9 +1,15 @@
-# EpiphanyDB
+<p align="center">
+  <img src="docs/assets/header.svg" alt="EpiphanyDB Header" width="100"/>
+</p>
 
-![Static Badge](https://img.shields.io/badge/Embedded-DB-blue)
-[![CodeQL Advanced](https://github.com/ULis3h/epiphanyDB/actions/workflows/codeql.yml/badge.svg?event=status)](https://github.com/ULis3h/epiphanyDB/actions/workflows/codeql.yml)
-![GitHub License](https://img.shields.io/github/license/mashape/apistatus)    
-`EpiphanyDB` 是一款为嵌入式系统设计的高性能\可靠的存储引擎,支持在有操作系统和无操作系统环境下运行.它提供了统一的存储接口,并可以适配多种流行的数据库系统.
+<h1 align="center">EpiphanyDB</h1>
+
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/badge/Embedded-DB-blue" alt="Static Badge"/></a>
+  <a href="https://github.com/ULis3h/epiphanyDB/actions/workflows/codeql.yml"><img src="https://github.com/ULis3h/epiphanyDB/actions/workflows/codeql.yml/badge.svg?event=status" alt="CodeQL Advanced"/></a>
+  <a href="#"><img src="https://img.shields.io/github/license/mashape/apistatus" alt="GitHub License"/></a>
+</p>
+`EpiphanyDB` 是一款通用数据库管理系统,支持在有操作系统和无操作系统环境下运行.它提供了统一的存储接口,并可以适配多种流行的数据库系统.
 
 ## 特性
 
