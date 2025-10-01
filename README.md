@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/assets/header.svg" alt="EpiphanyDB Header" width="100"/>
+  <a href="https://epiphanydb.io"><img src="docs/assets/header.svg" alt="EpiphanyDB Header" width="100"/></a>
 </p>
 
-<h1 align="center">EpiphanyDB</h1>
+<h1 align="center"><a href="https://epiphanydb.io" style="text-decoration:none; color:inherit;">EpiphanyDB</a></h1>
 
 <p align="center">
   <a href="#"><img src="https://img.shields.io/badge/Embedded-DB-blue" alt="Static Badge"/></a>
