@@ -1,0 +1,54 @@
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "docusaurus start",
+    "serve": "docusaurus serve",
+    "clear": "docusaurus clear",
+    "build": "node --max_old_space_size=16000 node_modules/@docusaurus/core/bin/docusaurus.mjs build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "node --max_old_space_size=16000 node_modules/@docusaurus/core/bin/docusaurus.mjs deploy",
+    "prettier": "prettier --write 'docs/**/*.md' 'blog/**/*.md' 'versioned_docs/**/*.md'"
+  },
+  "dependencies": {
+    "@apify/docusaurus-plugin-typedoc-api": "4.4.8",
+    "@docusaurus/core": "3.9.1",
+    "@docusaurus/faster": "3.9.1",
+    "@docusaurus/mdx-loader": "3.9.1",
+    "@docusaurus/plugin-client-redirects": "3.9.1",
+    "@docusaurus/preset-classic": "3.9.1",
+    "@docusaurus/remark-plugin-npm2yarn": "3.9.1",
+    "@giscus/react": "^3.1.0",
+    "@mdx-js/react": "3.1.1",
+    "@signalwire/docusaurus-plugin-llms-txt": "^1.2.1",
+    "classnames": "^2.5.1",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "5.9.3"
+  },
+  "resolutions": {
+    "typedoc": "^0.26.11"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.9.1",
+    "@docusaurus/types": "3.9.1",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "prettier": "^3.5.3"
+  },
+  "packageManager": "yarn@4.10.3"
+}

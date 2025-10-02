@@ -112,6 +112,9 @@ void epiphany_config_destroy(EPIPHANY_CONFIG* config);
 EPIPHANY_RET epiphany_open(const char* home, const char* config, 
                  EPIPHANY_CONNECTION** connection);
 
+EPIPHANY_RET epiphany_version(EPIPHANY_CONNECTION* connection, const char* config);
+
+
 /// @brief create epiphany by config.
 /// @param config [in] 传入epiphany_config_t类型的配置信息.
 /// @param connection [out] 传入指针类型的连接指针.
