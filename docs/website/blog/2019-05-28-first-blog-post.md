@@ -1,8 +1,8 @@
 ---
 slug: first-blog-post
 title: First Blog Post
-authors: [ulis, ulis]
-tags: [Database, Database]
+authors: [ulis]
+tags: [Database]
 ---
 
 Lorem ipsum dolor sit amet...
