@@ -1,0 +1,69 @@
+.terminalWindow {
+  background: #1e1e1e;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.terminalHeader {
+  background: #323232;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terminalButton {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.btnClose { background: #ff5f56; }
+.btnMinimize { background: #ffbd2e; }
+.btnMaximize { background: #27c93f; }
+
+.terminalTitle {
+  color: #999;
+  font-size: 12px;
+  margin-left: 12px;
+}
+
+.terminalBody {
+  padding: 24px;
+  min-height: 300px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #d4d4d4;
+}
+
+.codeLine {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.comment { color: #6a9955; }
+.keyword { color: #569cd6; font-weight: bold; }
+.function { color: #dcdcaa; }
+.string { color: #ce9178; }
+.operator { color: #d4d4d4; }
+.tableName { color: #4ec9b0; }
+.normal { color: #d4d4d4; }
+
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 20px;
+  background: #d4d4d4;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  opacity: 0;
+}
+
+.cursor.visible {
+  opacity: 1;
+}
+
