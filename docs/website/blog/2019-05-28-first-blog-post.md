@@ -1,8 +1,8 @@
 ---
 slug: first-blog-post
 title: First Blog Post
-authors: [slorber, yangshun]
-tags: [hola, docusaurus]
+authors: [ulis, ulis]
+tags: [Database, Database]
 ---
 
 Lorem ipsum dolor sit amet...
