@@ -1,8 +1,8 @@
 ---
 slug: welcome
 title: Welcome
-authors: [ulis, ulis]
-tags: [Database, Database, Database]
+authors: [ulis]
+tags: [Database]
 ---
 
 [Docusaurus blogging features](https://docusaurus.io/docs/blog) are powered by the [blog plugin](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog).
