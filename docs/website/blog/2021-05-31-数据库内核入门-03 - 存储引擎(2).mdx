@@ -3,18 +3,20 @@ slug: database-kernel-03-storage-engine-2
 title: 数据库内核入门-03 - 存储引擎(2)
 authors: [ulis]
 tags: [Database, Programming, Storage Engine, B-Tree, LSM-Tree]
-date: 2019-05-31
+date: 2021-05-31
 ---
 
 ## 简述
 这是数据库内核入门系列的第三篇文章，继续深入探讨存储引擎的实现细节，特别是B-Tree存储引擎的关键操作。
+
+{/* truncate */}
 
 ## B-Tree存储引擎的实现
 
 ### 页面布局
 B-Tree存储引擎通常基于页面进行管理，每个页面是磁盘I/O的基本单位。
 
-{/* truncate */}
+
 
 ```mermaid
 graph TB

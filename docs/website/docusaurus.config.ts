@@ -130,8 +130,9 @@ const config: Config = {
         {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/ULis3h/epiphanyDB',
-          label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },
@@ -161,6 +162,23 @@ const config: Config = {
             {
               label: 'X',
               href: 'https://x.com/docusaurus',
+            },
+          ],
+        },
+        {
+          title: 'Partners',
+          items: [
+            {
+              label: 'Zonav',
+              href: 'http://zonav.io',
+            },
+            {
+              label: 'MacrocosmDB',
+              href: 'http://macrocosmdb.io',
+            },
+            {
+              label: 'ULis\'s Blog 🧡',
+              href: 'https://ulis3h.github.io/',
             },
           ],
         },

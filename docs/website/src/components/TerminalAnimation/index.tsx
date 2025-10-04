@@ -134,7 +134,7 @@ export default function TerminalAnimation() {
   }, []);
 
   return (
-    <div className={styles.terminalWindow}>
+    <div className={`${styles.terminalWindow} terminal terminal-animation`}>
       <div className={styles.terminalHeader}>
         <div className={`${styles.terminalButton} ${styles.btnClose}`}></div>
         <div className={`${styles.terminalButton} ${styles.btnMinimize}`}></div>

@@ -1,1 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" zoomAndPan="magnify" viewBox="0 0 150 149.999998" height="200" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><clipPath id="29d5ae70d9"><path d="M 75 0 C 33.578125 0 0 33.578125 0 75 C 0 116.421875 33.578125 150 75 150 C 116.421875 150 150 116.421875 150 75 C 150 33.578125 116.421875 0 75 0 Z M 75 0 " clip-rule="nonzero"/></clipPath><clipPath id="e81408b369"><path d="M 0 0 L 150 0 L 150 150 L 0 150 Z M 0 0 " clip-rule="nonzero"/></clipPath><clipPath id="c7c716fb4b"><path d="M 75 0 C 33.578125 0 0 33.578125 0 75 C 0 116.421875 33.578125 150 75 150 C 116.421875 150 150 116.421875 150 75 C 150 33.578125 116.421875 0 75 0 Z M 75 0 " clip-rule="nonzero"/></clipPath><clipPath id="ba18c47729"><rect x="0" width="150" y="0" height="150"/></clipPath><clipPath id="9c52297d42"><path d="M 75 0 L 98.863281 51.136719 L 150 75 L 98.863281 98.863281 L 75 150 L 51.136719 98.863281 L 0 75 L 51.136719 51.136719 Z M 75 0 " clip-rule="nonzero"/></clipPath><clipPath id="8d7a695d3b"><path d="M 0 0 L 150 0 L 150 150 L 0 150 Z M 0 0 " clip-rule="nonzero"/></clipPath><clipPath id="3f07592d31"><path d="M 75 0 L 98.863281 51.136719 L 150 75 L 98.863281 98.863281 L 75 150 L 51.136719 98.863281 L 0 75 L 51.136719 51.136719 Z M 75 0 " clip-rule="nonzero"/></clipPath><clipPath id="31b2bae620"><rect x="0" width="150" y="0" height="150"/></clipPath></defs><g clip-path="url(#29d5ae70d9)"><g transform="matrix(1, 0, 0, 1, 0, -0.000000000000007527)"><g clip-path="url(#ba18c47729)"><g clip-path="url(#e81408b369)"><g clip-path="url(#c7c716fb4b)"><rect x="-33" width="216" fill="#8c52ff" height="215.999996" y="-32.999999" fill-opacity="1"/></g></g></g></g></g><g clip-path="url(#9c52297d42)"><g transform="matrix(1, 0, 0, 1, 0, -0.000000000000007527)"><g clip-path="url(#31b2bae620)"><g clip-path="url(#8d7a695d3b)"><g clip-path="url(#3f07592d31)"><rect x="-33" width="216" fill="#ffffff" height="215.999996" y="-32.999999" fill-opacity="1"/></g></g></g></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" zoomAndPan="magnify" viewBox="0 0 150 149.999998" height="200" preserveAspectRatio="xMidYMid meet" version="1.0">
+  <defs>
+    <clipPath id="29d5ae70d9">
+      <path d="M 75 0 C 33.578125 0 0 33.578125 0 75 C 0 116.421875 33.578125 150 75 150 C 116.421875 150 150 116.421875 150 75 C 150 33.578125 116.421875 0 75 0 Z M 75 0 " clip-rule="nonzero"/>
+    </clipPath>
+    <clipPath id="e81408b369">
+      <path d="M 0 0 L 150 0 L 150 150 L 0 150 Z M 0 0 " clip-rule="nonzero"/>
+    </clipPath>
+    <clipPath id="c7c716fb4b">
+      <path d="M 75 0 C 33.578125 0 0 33.578125 0 75 C 0 116.421875 33.578125 150 75 150 C 116.421875 150 150 116.421875 150 75 C 150 33.578125 116.421875 0 75 0 Z M 75 0 " clip-rule="nonzero"/>
+    </clipPath>
+    <clipPath id="ba18c47729">
+      <rect x="0" width="150" y="0" height="150"/>
+    </clipPath>
+  </defs>
+  
+  <!-- 背景圆形 -->
+  <g clip-path="url(#29d5ae70d9)">
+    <g transform="matrix(1, 0, 0, 1, 0, -0.000000000000007527)">
+      <g clip-path="url(#ba18c47729)">
+        <g clip-path="url(#e81408b369)">
+          <g clip-path="url(#c7c716fb4b)">
+            <rect x="-33" width="216" fill="#8c52ff" height="215.999996" y="-32.999999" fill-opacity="1">
+              <!-- 背景颜色渐变动画 -->
+              <animate attributeName="fill" values="#8c52ff;#a366ff;#8c52ff" dur="4s" repeatCount="indefinite"/>
+            </rect>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  
+  <!-- 主星形图标 - 不使用裁剪，让角可以超出圆形 -->
+  <g>
+    <!-- 星形路径，角可以超出圆形边界 -->
+    <path d="M 75 0 L 98.863281 51.136719 L 150 75 L 98.863281 98.863281 L 75 150 L 51.136719 98.863281 L 0 75 L 51.136719 51.136719 Z" fill="#ffffff" fill-opacity="1">
+      <!-- 主星形闪烁效果 -->
+      <animate attributeName="fill-opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- 中心闪烁星星 -->
+  <g transform="translate(75, 75)">
+    <!-- 主要星星 -->
+    <path d="M 0,-12 L 3,-3 L 12,0 L 3,3 L 0,12 L -3,3 L -12,0 L -3,-3 Z" fill="#ffdd44" opacity="0.9">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="scale" values="0.8;1.2;0.8" dur="2s" repeatCount="indefinite"/>
+    </path>
+    
+    <!-- 小装饰星星 -->
+    <g opacity="0.7">
+      <path d="M 20,-20 L 22,-18 L 24,-20 L 22,-22 Z" fill="#ffdd44">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="0.5s"/>
+      </path>
+      <path d="M -20,20 L -18,22 L -20,24 L -22,22 Z" fill="#ffdd44">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="1s"/>
+      </path>
+      <path d="M 20,20 L 22,22 L 24,20 L 22,18 Z" fill="#ffdd44">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="1.5s"/>
+      </path>
+      <path d="M -20,-20 L -18,-18 L -20,-16 L -22,-18 Z" fill="#ffdd44">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="2s"/>
+      </path>
+    </g>
+    
+    <!-- 光晕效果 -->
+    <circle r="12" fill="none" stroke="#ffdd44" stroke-width="1" opacity="0.5">
+      <animate attributeName="r" values="8;16;8" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0.2;0.8" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- 额外的闪烁点 -->
+  <g opacity="0.6">
+    <circle cx="30" cy="30" r="1.5" fill="#ffdd44">
+      <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" begin="0s"/>
+    </circle>
+    <circle cx="120" cy="40" r="1" fill="#ffdd44">
+      <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="1s"/>
+    </circle>
+    <circle cx="25" cy="120" r="1.2" fill="#ffdd44">
+      <animate attributeName="opacity" values="0;1;0" dur="2.8s" repeatCount="indefinite" begin="2s"/>
+    </circle>
+    <circle cx="125" cy="110" r="0.8" fill="#ffdd44">
+      <animate attributeName="opacity" values="0;1;0" dur="3.2s" repeatCount="indefinite" begin="0.8s"/>
+    </circle>
+  </g>
+</svg>
