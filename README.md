@@ -23,30 +23,34 @@
 
 ### 系统要求
 
-- **操作系统**: Linux (Ubuntu 18.04+, CentOS 7+) 或 macOS 10.15+
+- **操作系统**: macOS 10.15+ 或 Ubuntu 18.04+
 - **编译器**: GCC 7+ 或 Clang 10+
-- **内存**: 最少 4GB RAM (推荐 8GB+)
-- **存储**: 最少 10GB 可用空间
+- **内存**: 至少 4GB RAM
+- **磁盘空间**: 至少 2GB 可用空间
 
 ### 依赖安装
 
-#### macOS
+#### macOS (使用 Homebrew)
 ```bash
-# 安装必要的构建工具
-brew install autoconf automake pkg-config llvm icu4c krb5
+# 安装基础依赖
+brew install gcc make autoconf automake libtool pkg-config
+brew install openssl libxml2 libxslt icu4c python perl tcl-tk
+brew install krb5 openssl lz4 zstd readline
 
-# 设置环境变量
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c/lib/pkgconfig:/opt/homebrew/opt/krb5/lib/pkgconfig:$PKG_CONFIG_PATH"
-export LDFLAGS="-L/opt/homebrew/opt/icu4c/lib -L/opt/homebrew/opt/krb5/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/icu4c/include -I/opt/homebrew/opt/krb5/include"
+# 注意：macOS 版本不支持 systemd 和 LLVM JIT 编译
 ```
 
 #### Ubuntu/Debian
 ```bash
+# 安装基础依赖
 sudo apt-get update
-sudo apt-get install -y build-essential autoconf automake pkg-config \
-    libicu-dev libkrb5-dev llvm-dev postgresql-server-dev-all
+sudo apt-get install -y build-essential autoconf automake libtool pkg-config
+sudo apt-get install -y libssl-dev libxml2-dev libxslt1-dev libicu-dev
+sudo apt-get install -y python3-dev libperl-dev tcl-dev
+sudo apt-get install -y libkrb5-dev liblz4-dev libzstd-dev libreadline-dev
+sudo apt-get install -y libsystemd-dev  # Linux 系统支持 systemd
+
+# Linux 版本支持完整功能，包括 systemd 和 LLVM JIT 编译
 ```
 
 ### 构建安装
