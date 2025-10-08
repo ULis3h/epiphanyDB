@@ -1,55 +1,52 @@
 cmake_minimum_required(VERSION 3.16)
 
-# 项目配置
+# Project definition
 project(EpiphanyDB
     VERSION 1.0.0
-    DESCRIPTION "超融合多模态数据库 - 基于 PostgreSQL 17"
+    DESCRIPTION "EpiphanyDB - Multi-modal storage engine based on PostgreSQL 17"
     LANGUAGES C CXX
 )
 
-# 设置 C/C++ 标准
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_CXX_STANDARD 17)
+# Set C and C++ standards
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 构建类型
+# Build type
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-# 编译选项
-set(CMAKE_C_FLAGS_DEBUG "-g -O0 -DDEBUG")
-set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+# Compiler flags
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fPIC")
 
-# 项目路径
+# Debug flags
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -DDEBUG")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -DDEBUG")
+else()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -DNDEBUG")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -DNDEBUG")
+endif()
+
+# Project paths
 set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 set(POSTGRES_SOURCE_DIR ${PROJECT_ROOT}/postgresql)
 set(EPIPHANYDB_SOURCE_DIR ${PROJECT_ROOT}/src)
 set(EPIPHANYDB_INCLUDE_DIR ${PROJECT_ROOT}/include)
 
-# 输出目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# Check if PostgreSQL source exists
+if(NOT EXISTS ${POSTGRES_SOURCE_DIR})
+    message(FATAL_ERROR "PostgreSQL source directory not found: ${POSTGRES_SOURCE_DIR}")
+endif()
 
-# 包含目录
-include_directories(
-    ${EPIPHANYDB_INCLUDE_DIR}
-    ${POSTGRES_SOURCE_DIR}/src/include
-    ${CMAKE_BINARY_DIR}/postgresql/src/include
-)
-
-# 查找依赖包
+# Find required dependencies
 find_package(PkgConfig REQUIRED)
 
 # OpenSSL
 find_package(OpenSSL REQUIRED)
-if(OpenSSL_FOUND)
-    message(STATUS "Found OpenSSL: ${OPENSSL_VERSION}")
-endif()
 
 # ICU
 pkg_check_modules(ICU REQUIRED icu-uc icu-i18n)
@@ -58,284 +55,173 @@ pkg_check_modules(ICU REQUIRED icu-uc icu-i18n)
 find_package(LibXml2 REQUIRED)
 
 # LibXSLT
+find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBXSLT REQUIRED libxslt)
 
-# LLVM (可选)
-find_package(LLVM QUIET)
-if(LLVM_FOUND)
-    message(STATUS "Found LLVM: ${LLVM_PACKAGE_VERSION}")
-    add_definitions(-DHAVE_LLVM)
+# Zlib
+find_package(ZLIB REQUIRED)
+
+# Readline (optional)
+find_library(READLINE_LIBRARY readline)
+if(READLINE_LIBRARY)
+    set(HAVE_READLINE TRUE)
 endif()
 
-# Python (可选)
-find_package(Python3 COMPONENTS Interpreter Development QUIET)
-if(Python3_FOUND)
-    message(STATUS "Found Python: ${Python3_VERSION}")
-    add_definitions(-DHAVE_PYTHON)
-endif()
-
-# 编译选项
-add_compile_options(
-    -Wall
-    -Wextra
-    -Wno-unused-parameter
-    -Wno-sign-compare
-    -fPIC
+# Include directories
+include_directories(
+    ${EPIPHANYDB_INCLUDE_DIR}
+    ${POSTGRES_SOURCE_DIR}/src/include
+    ${CMAKE_BINARY_DIR}/postgresql/src/include
+    ${OPENSSL_INCLUDE_DIR}
+    ${ICU_INCLUDE_DIRS}
+    ${LIBXML2_INCLUDE_DIR}
+    ${LIBXSLT_INCLUDE_DIRS}
 )
 
-# 调试模式额外选项
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_compile_options(
-        -fsanitize=address
-        -fsanitize=undefined
-        -fno-omit-frame-pointer
-    )
-    add_link_options(
-        -fsanitize=address
-        -fsanitize=undefined
-    )
-endif()
+# Compile definitions
+add_definitions(
+    -DEPIPHANYDB_VERSION="${PROJECT_VERSION}"
+    -DPOSTGRES_VERSION="17.2"
+    ${ICU_CFLAGS_OTHER}
+    ${LIBXSLT_CFLAGS_OTHER}
+)
 
-# PostgreSQL 配置检查
-if(NOT EXISTS ${POSTGRES_SOURCE_DIR}/configure.ac)
-    message(FATAL_ERROR "PostgreSQL 源码不存在或不完整: ${POSTGRES_SOURCE_DIR}")
-endif()
+# Configure PostgreSQL
+set(POSTGRES_CONFIGURE_OPTIONS
+    --prefix=${CMAKE_BINARY_DIR}/postgresql-install
+    --with-openssl
+    --with-libxml
+    --with-libxslt
+    --with-icu
+    --enable-debug
+    --enable-cassert
+    --enable-depend
+)
 
-# 自定义目标：配置 PostgreSQL
+# Custom target to configure PostgreSQL
 add_custom_target(configure_postgres
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/build_config.sh
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMENT "配置 PostgreSQL..."
+    COMMAND ./configure ${POSTGRES_CONFIGURE_OPTIONS}
+    WORKING_DIRECTORY ${POSTGRES_SOURCE_DIR}
+    COMMENT "Configuring PostgreSQL..."
 )
 
-# 自定义目标：构建 PostgreSQL
+# Custom target to build PostgreSQL
 add_custom_target(build_postgres
-    COMMAND make -C ${POSTGRES_SOURCE_DIR} -j${CMAKE_BUILD_PARALLEL_LEVEL}
+    COMMAND make -j${CMAKE_BUILD_PARALLEL_LEVEL}
+    WORKING_DIRECTORY ${POSTGRES_SOURCE_DIR}
     DEPENDS configure_postgres
-    COMMENT "构建 PostgreSQL..."
+    COMMENT "Building PostgreSQL..."
 )
 
-# 自定义目标：安装 PostgreSQL
+# Custom target to install PostgreSQL
 add_custom_target(install_postgres
-    COMMAND make -C ${POSTGRES_SOURCE_DIR} install
+    COMMAND make install
+    WORKING_DIRECTORY ${POSTGRES_SOURCE_DIR}
     DEPENDS build_postgres
-    COMMENT "安装 PostgreSQL..."
+    COMMENT "Installing PostgreSQL..."
 )
 
-# EpiphanyDB 核心库
-if(EXISTS ${EPIPHANYDB_SOURCE_DIR})
-    # 收集源文件
-    file(GLOB_RECURSE EPIPHANYDB_SOURCES
-        ${EPIPHANYDB_SOURCE_DIR}/*.c
-        ${EPIPHANYDB_SOURCE_DIR}/*.cpp
-    )
-    
-    file(GLOB_RECURSE EPIPHANYDB_HEADERS
-        ${EPIPHANYDB_INCLUDE_DIR}/*.h
-        ${EPIPHANYDB_INCLUDE_DIR}/*.hpp
-    )
-    
-    # 创建核心库
-    add_library(epiphanydb_core SHARED
-        ${EPIPHANYDB_SOURCES}
-        ${EPIPHANYDB_HEADERS}
-    )
-    
-    # 链接库
-    target_link_libraries(epiphanydb_core
-        ${OPENSSL_LIBRARIES}
-        ${ICU_LIBRARIES}
-        ${LIBXML2_LIBRARIES}
-        ${LIBXSLT_LIBRARIES}
-    )
-    
-    # 包含目录
-    target_include_directories(epiphanydb_core PRIVATE
-        ${OPENSSL_INCLUDE_DIR}
-        ${ICU_INCLUDE_DIRS}
-        ${LIBXML2_INCLUDE_DIR}
-        ${LIBXSLT_INCLUDE_DIRS}
-    )
-    
-    # 编译定义
-    target_compile_definitions(epiphanydb_core PRIVATE
-        -DEPIPHANYDB_VERSION="${PROJECT_VERSION}"
-        -DPOSTGRES_VERSION="17.2"
-    )
-    
-    # 依赖 PostgreSQL
-    add_dependencies(epiphanydb_core install_postgres)
+# EpiphanyDB source files
+file(GLOB_RECURSE EPIPHANYDB_SOURCES
+    "${EPIPHANYDB_SOURCE_DIR}/*.c"
+    "${EPIPHANYDB_SOURCE_DIR}/*.cpp"
+)
+
+file(GLOB_RECURSE EPIPHANYDB_HEADERS
+    "${EPIPHANYDB_INCLUDE_DIR}/*.h"
+    "${EPIPHANYDB_SOURCE_DIR}/*.h"
+)
+
+# Create EpiphanyDB core library
+add_library(epiphanydb_core SHARED
+    ${EPIPHANYDB_SOURCES}
+    ${EPIPHANYDB_HEADERS}
+)
+
+# Link libraries
+target_link_libraries(epiphanydb_core
+    ${OPENSSL_LIBRARIES}
+    ${ICU_LIBRARIES}
+    ${LIBXML2_LIBRARIES}
+    ${LIBXSLT_LIBRARIES}
+    ${ZLIB_LIBRARIES}
+)
+
+if(READLINE_LIBRARY)
+    target_link_libraries(epiphanydb_core ${READLINE_LIBRARY})
 endif()
 
-# 存储引擎扩展
-set(STORAGE_ENGINES
-    heap_engine
-    columnar_engine
-    vector_engine
-    timeseries_engine
-    graph_engine
-)
+# Make sure PostgreSQL is built before EpiphanyDB
+add_dependencies(epiphanydb_core install_postgres)
+
+# Storage engines
+set(STORAGE_ENGINES heap columnar vector timeseries graph)
 
 foreach(ENGINE ${STORAGE_ENGINES})
-    set(ENGINE_DIR ${EPIPHANYDB_SOURCE_DIR}/storage/${ENGINE})
-    if(EXISTS ${ENGINE_DIR})
-        file(GLOB ENGINE_SOURCES ${ENGINE_DIR}/*.c ${ENGINE_DIR}/*.cpp)
-        if(ENGINE_SOURCES)
-            add_library(${ENGINE} SHARED ${ENGINE_SOURCES})
-            target_link_libraries(${ENGINE} epiphanydb_core)
-            add_dependencies(${ENGINE} epiphanydb_core)
-        endif()
+    file(GLOB ENGINE_SOURCES "${EPIPHANYDB_SOURCE_DIR}/storage/${ENGINE}/*.c")
+    if(ENGINE_SOURCES)
+        add_library(epiphanydb_${ENGINE} SHARED ${ENGINE_SOURCES})
+        target_link_libraries(epiphanydb_${ENGINE} epiphanydb_core)
+        add_dependencies(epiphanydb_${ENGINE} install_postgres)
     endif()
 endforeach()
 
-# 测试配置
+# Tests
 enable_testing()
+file(GLOB TEST_SOURCES "${EPIPHANYDB_SOURCE_DIR}/tests/*.c")
+foreach(TEST_SOURCE ${TEST_SOURCES})
+    get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
+    add_executable(${TEST_NAME} ${TEST_SOURCE})
+    target_link_libraries(${TEST_NAME} epiphanydb_core)
+    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+    add_dependencies(${TEST_NAME} install_postgres)
+endforeach()
 
-# 单元测试
-if(EXISTS ${PROJECT_ROOT}/tests)
-    file(GLOB_RECURSE TEST_SOURCES ${PROJECT_ROOT}/tests/*.c)
-    foreach(TEST_SOURCE ${TEST_SOURCES})
-        get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
-        add_executable(${TEST_NAME} ${TEST_SOURCE})
-        target_link_libraries(${TEST_NAME} epiphanydb_core)
-        add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
-        add_dependencies(${TEST_NAME} epiphanydb_core)
-    endforeach()
-endif()
-
-# 性能测试
-add_custom_target(benchmark
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/epiphanydb/bin/pgbench -i -s 10 postgres
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/epiphanydb/bin/pgbench -c 10 -j 2 -t 1000 postgres
-    DEPENDS install_postgres
-    COMMENT "运行性能测试..."
-)
-
-# 回归测试
-add_custom_target(regression_test
-    COMMAND make -C ${POSTGRES_SOURCE_DIR} check
-    DEPENDS build_postgres
-    COMMENT "运行回归测试..."
-)
-
-# 代码覆盖率
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    find_program(GCOV_PATH gcov)
-    find_program(LCOV_PATH lcov)
-    find_program(GENHTML_PATH genhtml)
-    
-    if(GCOV_PATH AND LCOV_PATH AND GENHTML_PATH)
-        add_compile_options(--coverage)
-        add_link_options(--coverage)
-        
-        add_custom_target(coverage
-            COMMAND ${LCOV_PATH} --directory . --capture --output-file coverage.info
-            COMMAND ${LCOV_PATH} --remove coverage.info '/usr/*' --output-file coverage.info
-            COMMAND ${LCOV_PATH} --list coverage.info
-            COMMAND ${GENHTML_PATH} -o coverage coverage.info
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            COMMENT "生成代码覆盖率报告..."
-        )
-    endif()
-endif()
-
-# 文档生成
-find_package(Doxygen QUIET)
-if(DOXYGEN_FOUND)
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in)
-    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-    
-    if(EXISTS ${DOXYGEN_IN})
-        configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-        
-        add_custom_target(docs
-            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-            COMMENT "生成 API 文档..."
-            VERBATIM
-        )
-    endif()
-endif()
-
-# 安装配置
+# Installation
 install(TARGETS epiphanydb_core
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
 )
 
-# 安装头文件
 install(DIRECTORY ${EPIPHANYDB_INCLUDE_DIR}/
     DESTINATION include/epiphanydb
-    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+    FILES_MATCHING PATTERN "*.h"
 )
 
-# 安装存储引擎
+# Install storage engines
 foreach(ENGINE ${STORAGE_ENGINES})
-    if(TARGET ${ENGINE})
-        install(TARGETS ${ENGINE}
-            LIBRARY DESTINATION lib/epiphanydb/engines
+    if(TARGET epiphanydb_${ENGINE})
+        install(TARGETS epiphanydb_${ENGINE}
+            LIBRARY DESTINATION lib/epiphanydb
         )
     endif()
 endforeach()
 
-# 安装脚本
-install(PROGRAMS
-    ${CMAKE_CURRENT_SOURCE_DIR}/start_epiphanydb.sh
-    ${CMAKE_CURRENT_SOURCE_DIR}/stop_epiphanydb.sh
-    ${CMAKE_CURRENT_SOURCE_DIR}/epiphanydb_env.sh
+# Install scripts and configs
+install(DIRECTORY scripts/
     DESTINATION bin
+    FILES_MATCHING PATTERN "*"
+    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 )
 
-# 安装配置文件
-install(FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs/POSTGRES_INTEGRATION.md
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs/MULTI_STORAGE_ENGINE_DESIGN.md
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs/HYPERCONVERGED_ARCHITECTURE.md
-    DESTINATION share/doc/epiphanydb
+install(DIRECTORY config/
+    DESTINATION etc/epiphanydb
+    FILES_MATCHING PATTERN "*.conf" PATTERN "*.yaml" PATTERN "*.json"
 )
 
-# CPack 配置
-set(CPACK_PACKAGE_NAME "EpiphanyDB")
-set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION})
-set(CPACK_PACKAGE_VENDOR "EpiphanyDB Team")
-set(CPACK_PACKAGE_CONTACT "team@epiphanydb.org")
-
-set(CPACK_SOURCE_GENERATOR "TGZ")
-set(CPACK_GENERATOR "TGZ;DEB;RPM")
-
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libssl3, libxml2, libxslt1.1, libicu70")
-set(CPACK_RPM_PACKAGE_REQUIRES "glibc, openssl-libs, libxml2, libxslt, libicu")
-
-include(CPack)
-
-# 显示配置信息
+# Print configuration summary
 message(STATUS "")
-message(STATUS "EpiphanyDB 配置摘要:")
-message(STATUS "  版本: ${PROJECT_VERSION}")
-message(STATUS "  构建类型: ${CMAKE_BUILD_TYPE}")
-message(STATUS "  C 编译器: ${CMAKE_C_COMPILER}")
-message(STATUS "  C++ 编译器: ${CMAKE_CXX_COMPILER}")
-message(STATUS "  安装前缀: ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "  PostgreSQL 源码: ${POSTGRES_SOURCE_DIR}")
+message(STATUS "EpiphanyDB Configuration Summary:")
+message(STATUS "  Version: ${PROJECT_VERSION}")
+message(STATUS "  Build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "  PostgreSQL source: ${POSTGRES_SOURCE_DIR}")
+message(STATUS "  Install prefix: ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "")
-message(STATUS "依赖库:")
+message(STATUS "Dependencies:")
 message(STATUS "  OpenSSL: ${OPENSSL_VERSION}")
 message(STATUS "  ICU: ${ICU_VERSION}")
 message(STATUS "  LibXML2: ${LIBXML2_VERSION_STRING}")
-if(LLVM_FOUND)
-    message(STATUS "  LLVM: ${LLVM_PACKAGE_VERSION}")
-endif()
-if(Python3_FOUND)
-    message(STATUS "  Python: ${Python3_VERSION}")
-endif()
-message(STATUS "")
-message(STATUS "构建目标:")
-message(STATUS "  make all          - 构建所有目标")
-message(STATUS "  make install      - 安装 EpiphanyDB")
-message(STATUS "  make test         - 运行测试")
-message(STATUS "  make benchmark    - 运行性能测试")
-message(STATUS "  make docs         - 生成文档")
-message(STATUS "  make package      - 创建安装包")
+message(STATUS "  LibXSLT: Found")
+message(STATUS "  Zlib: ${ZLIB_VERSION_STRING}")
+message(STATUS "  Readline: ${HAVE_READLINE}")
 message(STATUS "")

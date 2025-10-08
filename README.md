@@ -5,85 +5,87 @@
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17%2B-blue.svg)](https://www.postgresql.org/) [![Build Status](https://img.shields.io/badge/build-in--progress-yellow.svg)](#building) [![Language](https://img.shields.io/badge/language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
   
-  **基于 PostgreSQL 17 的开源超融合多模态数据库**
+  **Open-source Hyperconverged Multi-modal Database based on PostgreSQL 17**
   
-  *提供统一的多存储引擎访问接口，支持行存储、列存储、向量存储、时序存储和图存储*
+  *Provides unified multi-storage engine access interface, supporting row storage, column storage, vector storage, time-series storage, and graph storage*
+  
+  **English** | [中文](README_CN.md)
 </div>
 
-## ✨ 核心特性
+## ✨ Core Features
 
-- **多存储引擎架构**: 统一接口访问行存储、列存储、向量存储、时序存储和图存储引擎
-- **PostgreSQL 兼容**: 基于 PostgreSQL 17，完全兼容 SQL 标准
-- **统一查询接口**: 通过单一 SQL 接口访问所有存储引擎
-- **ACID 事务**: 跨所有存储引擎的完整 ACID 事务支持
-- **C 语言实现**: 高性能的 C 语言核心，提供原生性能
-- **扩展性设计**: 支持插件式存储引擎扩展
+- **Multi-Storage Engine Architecture**: Unified interface for accessing row, column, vector, time-series, and graph storage engines
+- **PostgreSQL Compatible**: Based on PostgreSQL 17, fully compatible with SQL standards
+- **Unified Query Interface**: Access all storage engines through a single SQL interface
+- **ACID Transactions**: Complete ACID transaction support across all storage engines
+- **C Language Implementation**: High-performance C language core providing native performance
+- **Extensible Design**: Support for plugin-style storage engine extensions
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 系统要求
+### System Requirements
 
-- **操作系统**: macOS 10.15+ 或 Ubuntu 18.04+
-- **编译器**: GCC 7+ 或 Clang 10+
-- **内存**: 至少 4GB RAM
-- **磁盘空间**: 至少 2GB 可用空间
+- **Operating System**: macOS 10.15+ or Ubuntu 18.04+
+- **Compiler**: GCC 7+ or Clang 10+
+- **Memory**: At least 4GB RAM
+- **Disk Space**: At least 2GB available space
 
-### 依赖安装
+### Dependency Installation
 
-#### macOS (使用 Homebrew)
+#### macOS (using Homebrew)
 ```bash
-# 安装基础依赖
+# Install basic dependencies
 brew install gcc make autoconf automake libtool pkg-config
 brew install openssl libxml2 libxslt icu4c python perl tcl-tk
 brew install krb5 openssl lz4 zstd readline
 
-# 注意：macOS 版本不支持 systemd 和 LLVM JIT 编译
+# Note: macOS version does not support systemd and LLVM JIT compilation
 ```
 
 #### Ubuntu/Debian
 ```bash
-# 安装基础依赖
+# Install basic dependencies
 sudo apt-get update
 sudo apt-get install -y build-essential autoconf automake libtool pkg-config
 sudo apt-get install -y libssl-dev libxml2-dev libxslt1-dev libicu-dev
 sudo apt-get install -y python3-dev libperl-dev tcl-dev
 sudo apt-get install -y libkrb5-dev liblz4-dev libzstd-dev libreadline-dev
-sudo apt-get install -y libsystemd-dev  # Linux 系统支持 systemd
+sudo apt-get install -y libsystemd-dev  # Linux systems support systemd
 
-# Linux 版本支持完整功能，包括 systemd 和 LLVM JIT 编译
+# Linux version supports full functionality, including systemd and LLVM JIT compilation
 ```
 
-### 构建安装
+### Build and Installation
 
 ```bash
-# 克隆仓库
+# Clone repository
 git clone https://github.com/yourusername/epiphanyDB.git
 cd epiphanyDB
 
-# 检查依赖
+# Check dependencies
 make check-deps
 
-# 构建项目
+# Build project
 make build
 
-# 安装
+# Install
 sudo make install
 
-# 启动服务
+# Start service
 make start
 ```
 
-### 验证安装
+### Verify Installation
 
 ```bash
-# 运行测试
+# Run tests
 make test
 
-# 检查服务状态
+# Check service status
 make status
 ```
 
-### 第一个程序
+### First Program
 
 ```c
 #include "storage_engines/vector_storage.h"
@@ -92,14 +94,14 @@ make status
 #include <stdio.h>
 
 int main() {
-    // 初始化向量存储引擎
+    // Initialize vector storage engine
     VectorStorageEngine* vector_engine = vector_storage_create();
     if (!vector_engine) {
         fprintf(stderr, "Failed to create vector storage engine\n");
         return 1;
     }
     
-    // 创建向量索引
+    // Create vector index
     VectorIndexConfig config = {
         .dimension = 128,
         .index_type = VECTOR_INDEX_HNSW,
@@ -113,7 +115,7 @@ int main() {
         return 1;
     }
     
-    // 插入向量数据
+    // Insert vector data
     float vector_data[128] = {0.1, 0.2, 0.3, /* ... */};
     VectorPoint point = {
         .id = 1,
@@ -123,7 +125,7 @@ int main() {
     
     vector_storage_insert(vector_engine, "embeddings", &point);
     
-    // 向量相似性搜索
+    // Vector similarity search
     VectorSearchParams search_params = {
         .k = 10,
         .ef = 100
@@ -134,7 +136,7 @@ int main() {
     
     printf("Found %d similar vectors\n", num_results);
     
-    // 清理资源
+    // Clean up resources
     vector_storage_free_search_results(search_results, num_results);
     vector_storage_destroy(vector_engine);
     
@@ -156,50 +158,51 @@ int main() {
 - [🧪 Testing Guide](docs/TESTING.md) - Testing framework usage
 - [🚀 Deployment Guide](docs/DEPLOYMENT.md) - Production deployment guide
 
-## 🧪 测试
+## 🧪 Testing
 
-EpiphanyDB 包含完整的测试套件，涵盖多个存储引擎的功能测试：
+EpiphanyDB includes a comprehensive test suite covering functionality tests for multiple storage engines:
 
-### 测试类别
-- **多存储引擎测试**: `tests/test_multi_storage_engines.c` - 测试向量、时序和图存储引擎的集成
-- **单元测试**: 各个存储引擎组件的独立功能测试
-- **性能测试**: 基准测试和性能回归测试
-- **集成测试**: 跨引擎功能和互操作性测试
+### Test Categories
+- **Multi-Storage Engine Tests**: `tests/test_multi_storage_engines.c` - Tests integration of vector, time-series, and graph storage engines
+- **Unit Tests**: Independent functionality tests for individual storage engine components
+- **Performance Tests**: Benchmark tests and performance regression tests
+- **Integration Tests**: Cross-engine functionality and interoperability tests
 
-### 运行测试
+### Running Tests
 ```bash
-# 运行所有测试
+# Run all tests
 make test
 
-# 运行特定的多存储引擎测试
+# Run specific multi-storage engine tests
 make test-engines
 
-# 编译测试文件（用于调试）
+# Compile test files (for debugging)
 gcc -o test_multi_storage_engines tests/test_multi_storage_engines.c \
     -Iinclude -std=c99 -Wall -Wextra
 
-# 运行编译后的测试
+# Run compiled tests
 ./test_multi_storage_engines
 ```
 
-### 测试覆盖
-- ✅ 向量存储引擎：索引创建、向量插入、相似性搜索
-- ✅ 时序存储引擎：数据点写入、批量操作、查询和聚合
-- ✅ 图存储引擎：节点和边操作、路径查找、图遍历
-## 🛠️ 开发环境
+### Test Coverage
+- ✅ Vector Storage Engine: Index creation, vector insertion, similarity search
+- ✅ Time-series Storage Engine: Data point writing, batch operations, queries and aggregation
+- ✅ Graph Storage Engine: Node and edge operations, path finding, graph traversal
 
-### 快速设置
+## 🛠️ Development Environment
+
+### Quick Setup
 ```bash
-# 自动化开发环境设置
+# Automated development environment setup
 make dev-setup
 
-# 检查开发依赖
+# Check development dependencies
 make check-deps
 ```
 
-### 手动设置
+### Manual Setup
 ```bash
-# 安装依赖（根据操作系统而异）
+# Install dependencies (varies by operating system)
 # Ubuntu/Debian
 sudo apt-get install build-essential autoconf automake pkg-config \
     libicu-dev libkrb5-dev llvm-dev postgresql-server-dev-all
@@ -207,18 +210,18 @@ sudo apt-get install build-essential autoconf automake pkg-config \
 # macOS
 brew install autoconf automake pkg-config llvm icu4c krb5
 
-# 构建开发版本
+# Build development version
 make build
 
-# 清理构建文件
+# Clean build files
 make clean
 ```
 
-## 🎯 使用场景
+## 🎯 Use Cases
 
-### 向量相似性搜索
+### Vector Similarity Search
 ```c
-// 使用向量存储引擎进行相似性搜索
+// Use vector storage engine for similarity search
 VectorStorageEngine* engine = vector_storage_create();
 VectorIndexConfig config = {
     .dimension = 512,
@@ -228,23 +231,23 @@ VectorIndexConfig config = {
 
 vector_storage_create_index(engine, "embeddings", &config);
 
-// 插入向量数据
+// Insert vector data
 float embedding[512] = {0.1, 0.2, /* ... */};
 VectorPoint point = {.id = 1, .vector = embedding, .dimension = 512};
 vector_storage_insert(engine, "embeddings", &point);
 
-// 相似性搜索
+// Similarity search
 VectorSearchParams params = {.k = 10, .ef = 100};
 VectorSearchResult* results = NULL;
 int count = vector_storage_search(engine, "embeddings", embedding, &params, &results);
 ```
 
-### IoT 时序数据处理
+### IoT Time-series Data Processing
 ```c
-// 使用时序存储引擎处理IoT数据
+// Use time-series storage engine for IoT data processing
 TimeseriesStorageEngine* ts_engine = timeseries_storage_create();
 
-// 写入时序数据点
+// Write time-series data points
 TimeseriesPoint point = {
     .timestamp = time(NULL),
     .series_name = "temperature_sensor_01",
@@ -257,16 +260,47 @@ TimeseriesPoint point = {
 
 timeseries_storage_write_point(ts_engine, &point);
 
-// 查询和聚合
+// Query and aggregation
 TimeseriesQueryParamsExt query = {
     .series_names = (char*[]){"temperature_sensor_01"},
     .num_series = 1,
-    .start_time = time(NULL) - 3600, // 最近1小时
+    .start_time = time(NULL) - 3600, // Last 1 hour
     .end_time = time(NULL),
     .aggregation = TIMESERIES_AGG_AVG
 };
 
 TimeseriesQueryResult* result = timeseries_storage_query_ext(ts_engine, &query);
+```
+
+### Social Network Graph Analysis
+```c
+// Use graph storage engine for social network analysis
+GraphStorageEngine* graph_engine = graph_storage_create();
+
+// Add user nodes
+GraphNode user1 = {.id = 1, .label = "User", .properties = "{\"name\":\"Alice\",\"age\":25}"};
+GraphNode user2 = {.id = 2, .label = "User", .properties = "{\"name\":\"Bob\",\"age\":30}"};
+
+graph_storage_add_node(graph_engine, &user1);
+graph_storage_add_node(graph_engine, &user2);
+
+// Add relationship edges
+GraphEdge friendship = {
+    .id = 1,
+    .source_id = 1,
+    .target_id = 2,
+    .label = "FRIEND",
+    .properties = "{\"since\":\"2023-01-01\"}"
+};
+
+graph_storage_add_edge(graph_engine, &friendship);
+
+// Find paths
+GraphPath* path = graph_storage_find_path(graph_engine, 1, 2, 3); // Max depth 3
+if (path) {
+    printf("Found path with %d nodes\n", path->num_nodes);
+    graph_storage_free_path(path);
+}
 ```
 
 ## 🏃‍♂️ Example Programs

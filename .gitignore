@@ -12,11 +12,13 @@
 !/client
 !/tests
 !/include
+!/postgresql
 !/Doxyfile
 !/.clang-format
 !/.vscode/
 
 #  忽略文件
+/epiphanydb
 /build
 /latex
 *.aed

@@ -1,0 +1,8 @@
+# EpiphanyDB extension control file
+comment = 'EpiphanyDB - Multi-modal storage engine for PostgreSQL'
+default_version = '1.0'
+module_pathname = '$libdir/epiphanydb'
+relocatable = false
+schema = epiphanydb
+requires = ''
+superuser = false
