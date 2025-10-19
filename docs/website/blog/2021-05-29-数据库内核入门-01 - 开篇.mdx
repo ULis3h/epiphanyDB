@@ -4,7 +4,35 @@ title: 数据库内核入门-01 - 开篇
 authors: [ulis]
 tags: [Database, Programming, Introduction]
 date: 2021-05-29
+description: 介绍数据库内核的基本概念、DBMS宏观结构与核心功能，为后续系列打下基础。
+keywords:
+  - EpiphanyDB
+  - 数据库内核
+  - DBMS
+  - 存储引擎
+  - 查询引擎
+  - 事务
+  - 并发控制
+  - 架构
+image: /img/数据库系统宏观结构.png
 ---
+
+import Head from '@docusaurus/Head';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: '数据库内核入门-01 - 开篇',
+      datePublished: '2021-05-29',
+      description: '介绍数据库内核的基本概念、DBMS宏观结构与核心功能，为后续系列打下基础。',
+      image: ['/img/数据库系统宏观结构.png'],
+      author: { '@type': 'Person', name: 'ULis' },
+    })}
+  </script>
+  <meta name="robots" content="index,follow" />
+</Head>
 
 ## 简述
 这是数据库内核入门系列的第一篇文章。 由于水平有限，文章可能会有错误，欢迎指正。
@@ -66,4 +94,4 @@ date: 2021-05-29
 
 
 数据库内核架构如下图所示(不同的系统可能有些细微差别):  
-<img src="/img/数据库内核细致架构图.svg" alt="数据库管理系统宏观结构" loading="lazy" style={{maxWidth: '800px', width: '80%', height: 'auto', display: 'block', margin: '1rem auto'}} />
+<img src="/img/数据库内核细致架构图.svg" alt="数据库内核细致架构图" loading="lazy" style={{maxWidth: '800px', width: '80%', height: 'auto', display: 'block', margin: '1rem auto'}} />

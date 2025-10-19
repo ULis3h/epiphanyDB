@@ -12,3 +12,8 @@ Programming:
   label: Programming
   permalink: /programming
   description: Programming tag description
+
+Introduction:
+  label: Introduction
+  permalink: /introduction
+  description: Introduction tag description
