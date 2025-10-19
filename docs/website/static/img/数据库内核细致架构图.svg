@@ -1,0 +1,173 @@
+<svg viewBox="0 0 1000 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-size: 28px; font-weight: bold; fill: #000; text-anchor: middle; }
+      .subtitle { font-size: 20px; font-weight: bold; fill: #000; text-anchor: middle; }
+      .label { font-size: 16px; fill: #000; text-anchor: middle; }
+      .small-label { font-size: 14px; fill: #000; text-anchor: middle; }
+    </style>
+  </defs>
+  
+  <!-- 标题 -->
+  <text x="500" y="40" class="title">数据库内核细致架构</text>
+  
+  <!-- 查询引擎区域 -->
+  <rect x="50" y="80" width="900" height="280" fill="#A0F0D0" stroke="#000" stroke-width="3" rx="15"/>
+  <text x="500" y="110" class="subtitle">查询引擎 (Query Engine)</text>
+  
+  <!-- SQL解析器 -->
+  <rect x="80" y="140" width="200" height="80" fill="#7FDBBA" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="180" y="175" class="label">SQL解析器</text>
+  <text x="180" y="200" class="small-label">(Parser)</text>
+  
+  <!-- 语法分析器 -->
+  <rect x="310" y="140" width="200" height="80" fill="#7FDBBA" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="410" y="175" class="label">语法分析器</text>
+  <text x="410" y="200" class="small-label">(Syntax Analyzer)</text>
+  
+  <!-- 语义分析器 -->
+  <rect x="540" y="140" width="200" height="80" fill="#7FDBBA" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="640" y="175" class="label">语义分析器</text>
+  <text x="640" y="200" class="small-label">(Semantic Analyzer)</text>
+  
+  <!-- 查询优化器 -->
+  <rect x="770" y="140" width="150" height="80" fill="#7FDBBA" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="845" y="175" class="label">查询优化器</text>
+  <text x="845" y="200" class="small-label">(Optimizer)</text>
+  
+  <!-- 查询计划生成器 -->
+  <rect x="195" y="250" width="280" height="80" fill="#60C9A0" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="335" y="285" class="label">查询计划生成器</text>
+  <text x="335" y="310" class="small-label">(Query Plan Generator)</text>
+  
+  <!-- 查询重写器 -->
+  <rect x="525" y="250" width="280" height="80" fill="#60C9A0" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="665" y="285" class="label">查询重写器</text>
+  <text x="665" y="310" class="small-label">(Query Rewriter)</text>
+  
+  <!-- 执行引擎区域 -->
+  <rect x="50" y="390" width="900" height="280" fill="#FF88CC" stroke="#000" stroke-width="3" rx="15"/>
+  <text x="500" y="420" class="subtitle">执行引擎 (Execution Engine)</text>
+  
+  <!-- 执行器 -->
+  <rect x="80" y="450" width="180" height="80" fill="#FF66BB" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="170" y="485" class="label">执行器</text>
+  <text x="170" y="510" class="small-label">(Executor)</text>
+  
+  <!-- 事务管理器 -->
+  <rect x="290" y="450" width="180" height="80" fill="#FF66BB" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="380" y="485" class="label">事务管理器</text>
+  <text x="380" y="510" class="small-label">(Transaction Mgr)</text>
+  
+  <!-- 并发控制 -->
+  <rect x="500" y="450" width="180" height="80" fill="#FF66BB" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="590" y="485" class="label">并发控制</text>
+  <text x="590" y="510" class="small-label">(Concurrency Ctrl)</text>
+  
+  <!-- 锁管理器 -->
+  <rect x="710" y="450" width="180" height="80" fill="#FF66BB" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="800" y="485" class="label">锁管理器</text>
+  <text x="800" y="510" class="small-label">(Lock Manager)</text>
+  
+  <!-- 日志管理器 -->
+  <rect x="185" y="560" width="280" height="80" fill="#FF44AA" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="325" y="595" class="label">日志管理器 (WAL)</text>
+  <text x="325" y="620" class="small-label">(Log Manager)</text>
+  
+  <!-- 恢复管理器 -->
+  <rect x="535" y="560" width="280" height="80" fill="#FF44AA" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="675" y="595" class="label">恢复管理器</text>
+  <text x="675" y="620" class="small-label">(Recovery Manager)</text>
+  
+  <!-- 存储引擎区域 -->
+  <rect x="50" y="700" width="900" height="280" fill="#99BBFF" stroke="#000" stroke-width="3" rx="15"/>
+  <text x="500" y="730" class="subtitle">存储引擎 (Storage Engine)</text>
+  
+  <!-- 缓冲池管理器 -->
+  <rect x="80" y="760" width="200" height="80" fill="#77AAFF" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="180" y="795" class="label">缓冲池管理</text>
+  <text x="180" y="820" class="small-label">(Buffer Pool)</text>
+  
+  <!-- 索引管理器 -->
+  <rect x="310" y="760" width="200" height="80" fill="#77AAFF" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="410" y="795" class="label">索引管理器</text>
+  <text x="410" y="820" class="small-label">(Index Manager)</text>
+  
+  <!-- 数据文件管理 -->
+  <rect x="540" y="760" width="200" height="80" fill="#77AAFF" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="640" y="795" class="label">数据文件管理</text>
+  <text x="640" y="820" class="small-label">(File Manager)</text>
+  
+  <!-- 空间管理器 -->
+  <rect x="770" y="760" width="150" height="80" fill="#77AAFF" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="845" y="795" class="label">空间管理</text>
+  <text x="845" y="820" class="small-label">(Space Mgr)</text>
+  
+  <!-- 页面管理器 -->
+  <rect x="195" y="870" width="280" height="80" fill="#5599FF" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="335" y="905" class="label">页面管理器</text>
+  <text x="335" y="930" class="small-label">(Page Manager)</text>
+  
+  <!-- 磁盘I/O管理 -->
+  <rect x="525" y="870" width="280" height="80" fill="#5599FF" stroke="#000" stroke-width="2" rx="10"/>
+  <text x="665" y="905" class="label">磁盘I/O管理</text>
+  <text x="665" y="930" class="small-label">(Disk I/O Manager)</text>
+  
+  <!-- 连接箭头 -->
+  <!-- 查询引擎内部箭头 -->
+  <path d="M 180 220 L 180 250" stroke="#000" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 410 220 L 335 250" stroke="#000" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 640 220 L 665 250" stroke="#000" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 845 220 L 665 250" stroke="#000" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- 查询引擎到执行引擎 -->
+  <path d="M 335 330 L 335 360 L 500 360 L 500 390" stroke="#000" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 665 330 L 665 360 L 500 360" stroke="#000" stroke-width="3" fill="none"/>
+  
+  <!-- 执行引擎内部箭头 -->
+  <path d="M 170 530 L 170 545 L 325 545 L 325 560" stroke="#000" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 380 530 L 380 545 L 325 545" stroke="#000" stroke-width="2" fill="none"/>
+  <path d="M 590 530 L 590 545 L 675 545 L 675 560" stroke="#000" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 800 530 L 800 545 L 675 545" stroke="#000" stroke-width="2" fill="none"/>
+  
+  <!-- 执行引擎到存储引擎 -->
+  <path d="M 325 640 L 325 670 L 500 670 L 500 700" stroke="#000" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 675 640 L 675 670 L 500 670" stroke="#000" stroke-width="3" fill="none"/>
+  
+  <!-- 存储引擎内部箭头 -->
+  <path d="M 180 840 L 180 855 L 335 855 L 335 870" stroke="#000" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 410 840 L 410 855 L 335 855" stroke="#000" stroke-width="2" fill="none"/>
+  <path d="M 640 840 L 640 855 L 665 855 L 665 870" stroke="#000" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 845 840 L 845 855 L 665 855" stroke="#000" stroke-width="2" fill="none"/>
+  
+  <!-- 箭头标记定义 -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#000"/>
+    </marker>
+  </defs>
+  
+  <!-- 底部物理存储 -->
+  <rect x="150" y="1010" width="200" height="120" fill="#7733FF" stroke="#000" stroke-width="3" rx="10"/>
+  <ellipse cx="250" cy="1040" rx="60" ry="15" fill="#6622DD" stroke="#000" stroke-width="2"/>
+  <ellipse cx="250" cy="1060" rx="60" ry="15" fill="#6622DD" stroke="#000" stroke-width="2"/>
+  <ellipse cx="250" cy="1080" rx="60" ry="15" fill="#6622DD" stroke="#000" stroke-width="2"/>
+  <text x="250" y="1115" class="label" fill="#FFF">物理存储</text>
+  
+  <rect x="400" y="1010" width="200" height="120" fill="#7733FF" stroke="#000" stroke-width="3" rx="10"/>
+  <ellipse cx="500" cy="1040" rx="60" ry="15" fill="#6622DD" stroke="#000" stroke-width="2"/>
+  <ellipse cx="500" cy="1060" rx="60" ry="15" fill="#6622DD" stroke="#000" stroke-width="2"/>
+  <ellipse cx="500" cy="1080" rx="60" ry="15" fill="#6622DD" stroke="#000" stroke-width="2"/>
+  <text x="500" y="1115" class="label" fill="#FFF">日志文件</text>
+  
+  <rect x="650" y="1010" width="200" height="120" fill="#7733FF" stroke="#000" stroke-width="3" rx="10"/>
+  <ellipse cx="750" cy="1040" rx="60" ry="15" fill="#6622DD" stroke="#000" stroke-width="2"/>
+  <ellipse cx="750" cy="1060" rx="60" ry="15" fill="#6622DD" stroke="#000" stroke-width="2"/>
+  <ellipse cx="750" cy="1080" rx="60" ry="15" fill="#6622DD" stroke="#000" stroke-width="2"/>
+  <text x="750" y="1115" class="label" fill="#FFF">索引文件</text>
+  
+  <!-- 存储引擎到物理存储的连接 -->
+  <path d="M 335 950 L 335 990 L 250 990 L 250 1010" stroke="#000" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 665 950 L 665 990 L 500 990 L 500 1010" stroke="#000" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 665 950 L 665 990 L 750 990 L 750 1010" stroke="#000" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+</svg>
